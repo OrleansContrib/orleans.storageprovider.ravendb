@@ -12,6 +12,7 @@
     <AssemblyName>Orleans.StorageProvider.RavenDB.TestGrains</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <NuGetPackageImportStamp>f5bee044</NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup>
     <StartAction>Program</StartAction>
@@ -58,6 +59,9 @@
       <Name>Orleans.StorageProvider.RavenDB.TestInterfaces</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <OrleansProjectType>Server</OrleansProjectType>
@@ -79,6 +83,13 @@
       )
     </PostBuildEvent>
   </PropertyGroup>
+  <Import Project="..\packages\GitVersionTask.0.20.0\Build\GitVersionTask.targets" Condition="Exists('..\packages\GitVersionTask.0.20.0\Build\GitVersionTask.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\GitVersionTask.0.20.0\Build\GitVersionTask.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\GitVersionTask.0.20.0\Build\GitVersionTask.targets'))" />
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
