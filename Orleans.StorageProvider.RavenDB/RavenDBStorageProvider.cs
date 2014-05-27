@@ -33,6 +33,8 @@
 
         public Task Init(string name, IProviderRuntime providerRuntime, IProviderConfiguration config)
         {
+            this.Log = providerRuntime.GetLogger(this.GetType().FullName, Logger.LoggerType.Application);
+
             string connectionStringName = config.Properties["ConnectionStringName"];
 
             if (string.IsNullOrEmpty(connectionStringName))
