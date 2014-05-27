@@ -6,8 +6,8 @@
       <Provider Type="Samples.StorageProviders.MongoDBStorage" Name="TestStore" Database="orleanssamples" ConnectionString="mongodb://localhost:27017/" />
       -->
       <Provider Type="Orleans.StorageProvider.RavenDB.RavenDBStorageProvider" Name="RavenDBStorageProviderTestStore" ConnectionStringName="RavenDB"/>
-      <Provider Type="Orleans.StorageProvider.RavenDB.RavenDBStorageProvider" Name="RavenDBStorageProviderLocalTestStore" ConnectionStringName="RavenDBLocal"/>
-      <Provider Type="Orleans.StorageProvider.RavenDB.RavenDBStorageProvider" Name="RavenDBStorageProviderInMemoryTestStore" ConnectionStringName=""/>
+      <!--<Provider Type="Orleans.StorageProvider.RavenDB.RavenDBStorageProvider" Name="RavenDBStorageProviderLocalTestStore" ConnectionStringName="RavenDBLocal"/>-->
+      <!--<Provider Type="Orleans.StorageProvider.RavenDB.RavenDBStorageProvider" Name="RavenDBStorageProviderInMemoryTestStore" ConnectionStringName=""/>-->
     </StorageProviders>
     <SeedNode Address="localhost" Port="11111" />
   </Globals>

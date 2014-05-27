@@ -8,9 +8,9 @@ using Orleans.StorageProvider.RavenDB.TestInterfaces;
 
 namespace Orleans.StorageProvider.RavenDB.TestGrains
 {
-    //[StorageProvider(ProviderName = "RavenDBStorageProviderTestStore")]
+    [StorageProvider(ProviderName = "RavenDBStorageProviderTestStore")]
     //[StorageProvider(ProviderName = "RavenDBStorageProviderLocalTestStore")]
-    [StorageProvider(ProviderName = "RavenDBStorageProviderInMemoryTestStore")]
+    //[StorageProvider(ProviderName = "RavenDBStorageProviderInMemoryTestStore")]
     public class Person : GrainBase<IPersonState>, IPerson
     {
         Task IPerson.SetPersonalAttributes(PersonalAttributes props)
@@ -42,6 +42,38 @@ namespace Orleans.StorageProvider.RavenDB.TestGrains
         {
             get { return Task.FromResult(State.Age); }
         }
+    }
+
+    [StorageProvider(ProviderName = "RavenDBStorageProviderTestStore")]
+    public class Email : GrainBase<IEmailState>, IEmail
+    {
+        private string email;
+
+        public override Task ActivateAsync()
+        {
+            this.GetPrimaryKey(out this.email);
+            this.State.Email = this.email;
+
+            return base.ActivateAsync();
+        }
+
+        public async Task Send()
+        {
+            if (this.State.SentAt.HasValue)
+            {
+                return;
+            }
+
+            this.State.SentAt = DateTimeOffset.UtcNow;
+
+            await this.State.WriteStateAsync();
+        }
+    }
+
+    public interface IEmailState : IGrainState
+    {
+        string Email { get; set; }
+        DateTimeOffset? SentAt { get; set; }
     }
 
     public interface IPersonState : IGrainState

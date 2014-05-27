@@ -30,4 +30,10 @@ namespace Orleans.StorageProvider.RavenDB.TestInterfaces
         public int Age { get; set; }
         public GenderType Gender { get; set; }
     }
+
+    [ExtendedPrimaryKey]
+    public interface IEmail : IGrain
+    {
+        Task Send();
+    }
 }

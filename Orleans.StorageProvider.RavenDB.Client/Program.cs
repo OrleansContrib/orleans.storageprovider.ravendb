@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Orleans.StorageProvider.RavenDB.TestInterfaces;
 
 namespace Orleans.StorageProvider.RavenDB.Client
@@ -20,6 +21,9 @@ namespace Orleans.StorageProvider.RavenDB.Client
             });
 
             Orleans.OrleansClient.Initialize("DevTestClientConfiguration.xml");
+
+            var email = EmailFactory.GetGrain(1, "asdf@gmail.bs#ç%&/()+¦");
+            email.Send().Wait();
 
             var grain = PersonFactory.GetGrain(1);
             

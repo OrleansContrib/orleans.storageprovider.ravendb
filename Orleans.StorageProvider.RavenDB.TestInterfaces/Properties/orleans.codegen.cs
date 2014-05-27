@@ -268,6 +268,164 @@ static public System.Threading.Tasks.Task<PersonProperties> GetProperties(this I
             }
     }
     
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.814.60418")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
+    public class EmailFactory
+    {
+        
+
+                        public static IEmail GetGrain(long primaryKey, string keyExt)
+                        {
+                            return Cast(GrainFactoryBase.MakeKeyExtendedGrainReferenceInternal(typeof(IEmail), 938089621, primaryKey, keyExt));
+                        }
+
+                        public static IEmail GetGrain(long primaryKey, string keyExt, string grainClassNamePrefix)
+                        {
+                            return Cast(GrainFactoryBase.MakeKeyExtendedGrainReferenceInternal(typeof(IEmail), 938089621, primaryKey, keyExt, grainClassNamePrefix));
+                        }
+
+                        public static IEmail GetGrain(Guid primaryKey, string keyExt)
+                        {
+                            return Cast(GrainFactoryBase.MakeKeyExtendedGrainReferenceInternal(typeof(IEmail), 938089621, primaryKey, keyExt));
+                        }
+
+                        public static IEmail GetGrain(Guid primaryKey, string keyExt, string grainClassNamePrefix)
+                        {
+                            return Cast(GrainFactoryBase.MakeKeyExtendedGrainReferenceInternal(typeof(IEmail), 938089621, primaryKey, keyExt,grainClassNamePrefix));
+                        }
+
+            public static IEmail Cast(IAddressable grainRef)
+            {
+                
+                return EmailReference.Cast(grainRef);
+            }
+        
+        [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.814.60418")]
+        [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
+        [System.SerializableAttribute()]
+        [Orleans.GrainReferenceAttribute("Orleans.StorageProvider.RavenDB.TestInterfaces.IEmail")]
+        internal class EmailReference : Orleans.GrainReference, IEmail, Orleans.IAddressable
+        {
+            
+
+            public static IEmail Cast(IAddressable grainRef)
+            {
+                
+                return (IEmail) GrainReference.CastInternal(typeof(IEmail), (GrainReference gr) => { return new EmailReference(gr);}, grainRef, 938089621);
+            }
+
+                protected override int InterfaceId { get { return 938089621; } }
+
+                public override bool IsCompatible(int interfaceId) { return interfaceId == this.InterfaceId; }
+
+                protected override string InterfaceName { get { return "Orleans.StorageProvider.RavenDB.TestInterfaces.IEmail"; } }
+
+                protected override string GetMethodName(int interfaceId, int methodId) { return EmailMethodInvoker.GetMethodName(interfaceId, methodId); }
+            
+            protected internal EmailReference(GrainReference reference) : 
+                    base(reference)
+            {
+            }
+            
+            [Orleans.CopierMethodAttribute()]
+            public static object _Copier(object original)
+            {
+                EmailReference input = ((EmailReference)(original));
+                return ((EmailReference)(GrainReference.CopyGrainReference(input)));
+            }
+            
+            [Orleans.SerializerMethodAttribute()]
+            public static void _Serializer(object original, Orleans.Serialization.BinaryTokenStreamWriter stream, System.Type expected)
+            {
+                EmailReference input = ((EmailReference)(original));
+                GrainReference.SerializeGrainReference(input, stream, expected);
+            }
+            
+            [Orleans.DeserializerMethodAttribute()]
+            public static object _Deserializer(System.Type expected, Orleans.Serialization.BinaryTokenStreamReader stream)
+            {
+                return EmailReference.Cast(((Orleans.GrainReference)(GrainReference.DeserializeGrainReference(expected, stream))));
+            }
+            
+            public System.Threading.Tasks.Task Send()
+            {
+
+                return base.InvokeMethodAsync<object>(-470441258, new object[] {}, TimeSpan.Zero );
+            }
+        }
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.814.60418")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
+    [Orleans.MethodInvokerAttribute("Orleans.StorageProvider.RavenDB.TestInterfaces.IEmail", 938089621)]
+    internal class EmailMethodInvoker : IGrainMethodInvoker
+    {
+        
+        public int InterfaceId
+        {
+            get
+            {
+                return 938089621;
+            }
+        }
+        
+        public async System.Threading.Tasks.Task<Object> Invoke(IAddressable grain, int interfaceId, int methodId, object[] arguments)
+        {
+                if (grain == null) throw new System.ArgumentNullException("grain");
+                switch (interfaceId)
+                {
+                    case 938089621:  // IEmail
+                        switch (methodId)
+                        {
+                            case -470441258: 
+                                await ((IEmail)grain).Send();
+                              return true;
+                            default: 
+                                throw new NotImplementedException("interfaceId="+interfaceId+",methodId="+methodId);
+                        }
+                    default:
+                        throw new System.InvalidCastException("interfaceId="+interfaceId);
+                }
+        }
+        
+        public static string GetMethodName(int interfaceId, int methodId)
+        {
+
+            switch (interfaceId)
+            {
+                
+                case 938089621:  // IEmail
+                    switch (methodId)
+                    {
+                        case -470441258:
+                            return "Send";
+                    case -606142484:
+                            return "GetProperties";
+                    
+                        default: 
+                            throw new NotImplementedException("interfaceId="+interfaceId+",methodId="+methodId);
+                    }
+
+                default:
+                    throw new System.InvalidCastException("interfaceId="+interfaceId);
+            }
+        }
+    }
+    
+    [Serializable()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.814.60418")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
+    public class EmailProperties
+    {
+        
+
+            public Dictionary<string,object> AsDictionary()
+            {  
+                var retValue = new Dictionary<string,object>();
+                return retValue;
+            }
+    }
+    
     [Orleans.RegisterSerializerAttribute()]
     internal class Orleans_StorageProvider_RavenDB_TestInterfaces_PersonalAttributesSerialization
     {
