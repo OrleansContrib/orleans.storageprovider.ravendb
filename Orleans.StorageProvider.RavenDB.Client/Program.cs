@@ -26,15 +26,18 @@ namespace Orleans.StorageProvider.RavenDB.Client
             email.Send().Wait();
 
             var grain = PersonFactory.GetGrain(1);
+            var grain2 = PersonFactory.GetGrain(2);
             
             // If the name is set, we've run this code before.
             var name = grain.FirstName.Result;
+            var name2 = grain2.FirstName.Result;
 
             if (name != null)
             {
-                Console.WriteLine("\n\nThis was found in the persistent store: {0}, {1}, {2}\n\n",
+                Console.WriteLine("\n\nThis was found in the persistent store: {0}, {1}, {2}, {3}\n\n",
                     name,
                     grain.LastName.Result,
+                    grain.Gender.Result,
                     grain.Age.Result);
             }
             else
