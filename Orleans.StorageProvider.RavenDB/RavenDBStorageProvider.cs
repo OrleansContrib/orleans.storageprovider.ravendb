@@ -1,4 +1,10 @@
-﻿namespace Orleans.StorageProvider.RavenDB
+﻿using System;
+using System.Collections.Concurrent;
+using System.Linq.Expressions;
+using System.Reflection;
+using Raven.Imports.Newtonsoft.Json.Utilities;
+
+namespace Orleans.StorageProvider.RavenDB
 {
     using System.Configuration;
     using System.Data.Common;
@@ -26,6 +32,7 @@
     /// </remarks>
     public class RavenDBStorageProvider : IStorageProvider
     {
+        private static ConcurrentDictionary<Type, MethodInfo> loadAsyncMethodInfoCache = new ConcurrentDictionary<Type, MethodInfo>(); 
         private DocumentStore documentStore;
         public string Name { get; private set; }
 
@@ -80,10 +87,13 @@
 
             using (IAsyncDocumentSession session = this.documentStore.OpenAsyncSession())
             {
-                var state = await session.LoadAsync<RavenJObject>(id);
+                var methodInfo = loadAsyncMethodInfoCache.GetOrAdd(
+                    grainState.GetType(), 
+                    t => session.GetType().GetGenericMethod("LoadAsync", typeof(string)).MakeGenericMethod(grainState.GetType()));
+                var state = await((dynamic)methodInfo.Invoke(session, new object[] { id }));
                 if (state != null)
                 {
-                    grainState.SetAll(state.ToDictionary(x => x.Key, x => x.Value.Value<object>()));
+                    grainState.SetAll(((IGrainState)state).AsDictionary());
                 }
             }
         }
@@ -149,7 +159,7 @@
                 this.documentStore = new EmbeddableDocumentStore
                 {
                     ConnectionStringName = connectionStringName,
-                    UseEmbeddedHttpServer = true
+                    UseEmbeddedHttpServer = true,
                 };
 
                 NonAdminHttp.EnsureCanListenToWhenInNonAdminContext(8080);
