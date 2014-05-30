@@ -40,13 +40,14 @@ namespace Orleans.StorageProvider.RavenDB
 
         public Task Init(string name, IProviderRuntime providerRuntime, IProviderConfiguration config)
         {
-            this.Log = providerRuntime.GetLogger(this.GetType().FullName, Logger.LoggerType.Application);
+            this.Name = name;
+            this.Log = providerRuntime.GetLogger("Storage.RavenDB", Logger.LoggerType.Runtime);
 
             string connectionStringName = config.Properties["ConnectionStringName"];
-
+            
             if (string.IsNullOrEmpty(connectionStringName))
             {
-                this.Log.Info("Starting RavenDB Storage Provider InMemory");
+                this.Log.Info("Init: Name={0} Mode=InMemory", this.Name);
                 return this.InMemoryMode();
             }
 
@@ -60,14 +61,14 @@ namespace Orleans.StorageProvider.RavenDB
             object url;
             if (connectionStringBuilder.TryGetValue("Url", out url))
             {
-                this.Log.Info("Starting RavenDB Storage Provider attached to server {0}", url);
+                this.Log.Info("Init: Name={0} Mode=Server Url={1} ConnectionString={2}", this.Name, url, connectionStringBuilder.ConnectionString);
                 return this.ServerMode(connectionStringName);
             }
 
             object dataDir;
             if (connectionStringBuilder.TryGetValue("DataDir", out dataDir))
             {
-                this.Log.Info("Starting RavenDB Storage Provider embedded in directory {0}", dataDir);
+                this.Log.Info("Init: Name={0} Mode=Embedded DataDir={1} ConnectionString={2}", this.Name, dataDir, connectionStringBuilder.ConnectionString);
                 return this.LocalMode(connectionStringName);
             }
 
@@ -85,6 +86,8 @@ namespace Orleans.StorageProvider.RavenDB
             var key = grainReference.ToKeyString();
             var id = string.Format(CultureInfo.InvariantCulture, "{0}/{1}", stateName, key);
 
+            this.Log.Verbose3("Reading: GrainType={0} Pk={1} Grainid={2} from Document={3}", grainType, key, grainReference, id);
+
             using (IAsyncDocumentSession session = this.documentStore.OpenAsyncSession())
             {
                 var methodInfo = loadAsyncMethodInfoCache.GetOrAdd(
@@ -93,6 +96,7 @@ namespace Orleans.StorageProvider.RavenDB
                 var state = await((dynamic)methodInfo.Invoke(session, new object[] { id }));
                 if (state != null)
                 {
+                    this.Log.Verbose3("Read: GrainType={0} Pk={1} Grainid={2} from Document={3}", grainType, key, grainReference, id);
                     grainState.SetAll(((IGrainState)state).AsDictionary());
                 }
             }
@@ -104,10 +108,14 @@ namespace Orleans.StorageProvider.RavenDB
             var key = grainReference.ToKeyString();
             var id = string.Format(CultureInfo.InvariantCulture, "{0}/{1}", stateName, key);
 
+            this.Log.Verbose3("Writing: GrainType={0} Pk={1} Grainid={2} ETag={3} to Document={4}", grainType, key, grainReference, grainState.Etag, id);
+
             using (IAsyncDocumentSession session = this.documentStore.OpenAsyncSession())
             {
                 await session.StoreAsync(grainState, id);
                 await session.SaveChangesAsync();
+
+                this.Log.Verbose3("Written: GrainType={0} Pk={1} Grainid={2} ETag={3} to Document={4}", grainType, key, grainReference, grainState.Etag, id);
             }
         }
 
@@ -117,6 +125,8 @@ namespace Orleans.StorageProvider.RavenDB
             var key = grainReference.ToKeyString();
             var id = string.Format(CultureInfo.InvariantCulture, "{0}/{1}", stateName, key);
 
+            this.Log.Verbose3("Clearing: GrainType={0} Pk={1} Grainid={2} ETag={3} from Document={4}", grainType, key, grainReference, grainState.Etag, id);
+
             using (IAsyncDocumentSession session = this.documentStore.OpenAsyncSession())
             {
                 session.Advanced.Defer(new DeleteCommandData
@@ -124,6 +134,8 @@ namespace Orleans.StorageProvider.RavenDB
                     Key = id
                 });
                 await session.SaveChangesAsync();
+
+                this.Log.Verbose3("Cleared: GrainType={0} Pk={1} Grainid={2} ETag={3} from Document={4}", grainType, key, grainReference, grainState.Etag, id);
             }
         }
 
