@@ -18,7 +18,6 @@ namespace Orleans.StorageProvider.RavenDB
     using Raven.Client.Document;
     using Raven.Client.Embedded;
     using Raven.Database.Server;
-    using Raven.Json.Linq;
 
     /// <summary>
     /// A RavenDB storage provider.
@@ -97,7 +96,12 @@ namespace Orleans.StorageProvider.RavenDB
                 if (state != null)
                 {
                     this.Log.Verbose3("Read: GrainType={0} Pk={1} Grainid={2} from Document={3}", grainType, key, grainReference, id);
-                    grainState.SetAll(((IGrainState)state).AsDictionary());
+                    
+                    var storedGrainState = (IGrainState)state;
+                    grainState.SetAll(storedGrainState.AsDictionary());
+
+                    // The deserialized grain state actually has the Etag but SetAll doesn't assign it automatically.
+                    grainState.Etag = storedGrainState.Etag;
                 }
             }
         }
@@ -112,7 +116,18 @@ namespace Orleans.StorageProvider.RavenDB
 
             using (IAsyncDocumentSession session = this.documentStore.OpenAsyncSession())
             {
-                await session.StoreAsync(grainState, id);
+                session.Advanced.UseOptimisticConcurrency = true;
+
+                // If we have an Etag we need to check against that Etag while storing
+                if (grainState.Etag != null)
+                {
+                    await session.StoreAsync(grainState, grainState.Etag, id);
+                }
+                else
+                {
+                    await session.StoreAsync(grainState, id);
+                }
+
                 await session.SaveChangesAsync();
 
                 this.Log.Verbose3("Written: GrainType={0} Pk={1} Grainid={2} ETag={3} to Document={4}", grainType, key, grainReference, grainState.Etag, id);
@@ -147,6 +162,7 @@ namespace Orleans.StorageProvider.RavenDB
                 {
                     ConnectionStringName = connectionStringName,
                 };
+                this.documentStore.RegisterNecessaryListeners();
                 this.documentStore.Initialize();
             });
         }
@@ -159,7 +175,7 @@ namespace Orleans.StorageProvider.RavenDB
                 {
                     RunInMemory = true
                 };
-
+                this.documentStore.RegisterNecessaryListeners();
                 this.documentStore.Initialize();
             });
         }
@@ -175,7 +191,7 @@ namespace Orleans.StorageProvider.RavenDB
                 };
 
                 NonAdminHttp.EnsureCanListenToWhenInNonAdminContext(8080);
-
+                this.documentStore.RegisterNecessaryListeners();
                 this.documentStore.Initialize();
             });
         }

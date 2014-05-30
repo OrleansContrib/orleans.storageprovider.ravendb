@@ -30,7 +30,10 @@ namespace Orleans.StorageProvider.RavenDB.Client
             
             // If the name is set, we've run this code before.
             var name = grain.FirstName.Result;
+
+            // We always override person 2
             var name2 = grain2.FirstName.Result;
+            grain2.SetPersonalAttributes(new PersonalAttributes { FirstName = "John Copy", LastName = "Doe Copy", Age = 24, Gender = GenderType.Male }).Wait();
 
             if (name != null)
             {
