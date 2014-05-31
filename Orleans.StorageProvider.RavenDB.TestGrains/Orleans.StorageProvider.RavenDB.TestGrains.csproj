@@ -50,7 +50,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Grain1.cs" />
+    <Compile Include="Email.cs" />
+    <Compile Include="Person.cs" />
+    <Compile Include="IEmailState.cs" />
+    <Compile Include="IPersonState.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
