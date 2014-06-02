@@ -35,5 +35,8 @@ namespace Orleans.StorageProvider.RavenDB.TestInterfaces
     public interface IEmail : IGrain
     {
         Task Send();
+		Task SetPerson(IPerson person);
+		Task<IPerson> Person { get; }
+		Task<DateTimeOffset?> SentAt { get; }
     }
 }

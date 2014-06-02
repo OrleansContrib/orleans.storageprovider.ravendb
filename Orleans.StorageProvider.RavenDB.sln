@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30110.0
+VisualStudioVersion = 12.0.30501.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orleans.StorageProvider.RavenDB", "Orleans.StorageProvider.RavenDB\Orleans.StorageProvider.RavenDB.csproj", "{ED764D95-C90D-4A3E-8E68-44E6CE8B02D9}"
 EndProject
@@ -13,6 +13,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orleans.StorageProvider.RavenDB.TestInterfaces", "Orleans.StorageProvider.RavenDB.TestInterfaces\Orleans.StorageProvider.RavenDB.TestInterfaces.csproj", "{10D5D2A7-3D34-4ED8-8C45-54D29C2559B6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orleans.StorageProvider.RavenDB.TestGrains", "Orleans.StorageProvider.RavenDB.TestGrains\Orleans.StorageProvider.RavenDB.TestGrains.csproj", "{175FE268-122D-49E4-ADA8-3225DA386F48}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orleans.StorageProvider.RavenDb.Tests", "Orleans.StorageProvider.RavenDb.Tests\Orleans.StorageProvider.RavenDb.Tests.csproj", "{4F0C4C26-A124-40DF-96AA-CE8E7B40A555}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -36,6 +38,10 @@ Global
 		{175FE268-122D-49E4-ADA8-3225DA386F48}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{175FE268-122D-49E4-ADA8-3225DA386F48}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{175FE268-122D-49E4-ADA8-3225DA386F48}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4F0C4C26-A124-40DF-96AA-CE8E7B40A555}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F0C4C26-A124-40DF-96AA-CE8E7B40A555}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F0C4C26-A124-40DF-96AA-CE8E7B40A555}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F0C4C26-A124-40DF-96AA-CE8E7B40A555}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

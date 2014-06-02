@@ -68,12 +68,31 @@ namespace Orleans.StorageProvider.RavenDB.TestGrains
 
             await this.State.WriteStateAsync();
         }
+
+		public Task<IPerson> Person
+		{
+			get { return Task.FromResult(State.Person); }
+		}
+
+
+		public Task SetPerson(IPerson person)
+		{
+			State.Person = person;
+			return State.WriteStateAsync();
+		}
+
+
+		public Task<DateTimeOffset?> SentAt
+		{
+			get { return Task.FromResult(State.SentAt); }
+		}
     }
 
     public interface IEmailState : IGrainState
     {
         string Email { get; set; }
         DateTimeOffset? SentAt { get; set; }
+		IPerson Person { get; set; }
     }
 
     public interface IPersonState : IGrainState
