@@ -82,10 +82,25 @@ namespace Orleans.StorageProvider.RavenDB.TestInterfaces
                 protected override string InterfaceName { get { return "Orleans.StorageProvider.RavenDB.TestInterfaces.IEmail"; } }
 
                 protected override string GetMethodName(int interfaceId, int methodId) { return EmailMethodInvoker.GetMethodName(interfaceId, methodId); }
+
+            public async System.Threading.Tasks.Task<EmailProperties> GetProperties() 
+            { 
+                return await base.InvokeMethodAsync<EmailProperties>( -606142484, new object[]{}, TimeSpan.Zero);
+            }
+            
             
             protected internal EmailReference(GrainReference reference) : 
                     base(reference)
             {
+            }
+            
+            public System.Threading.Tasks.Task<Orleans.StorageProvider.RavenDB.TestInterfaces.IPerson> Person
+            {
+                get
+                {
+
+                return base.InvokeMethodAsync<Orleans.StorageProvider.RavenDB.TestInterfaces.IPerson>(696601301, new object[] {}, TimeSpan.Zero , options: InvokeMethodOptions.ReadOnly);
+                }
             }
             
             [Orleans.CopierMethodAttribute()]
@@ -106,6 +121,12 @@ namespace Orleans.StorageProvider.RavenDB.TestInterfaces
             public static object _Deserializer(System.Type expected, Orleans.Serialization.BinaryTokenStreamReader stream)
             {
                 return EmailReference.Cast(((Orleans.GrainReference)(GrainReference.DeserializeGrainReference(expected, stream))));
+            }
+            
+            public System.Threading.Tasks.Task SetPerson(Orleans.StorageProvider.RavenDB.TestInterfaces.IPerson person)
+            {
+
+                return base.InvokeMethodAsync<object>(-646214881, new object[] {person is GrainBase ? Orleans.StorageProvider.RavenDB.TestInterfaces.PersonFactory.Cast(person.AsReference()) : person}, TimeSpan.Zero );
             }
             
             public System.Threading.Tasks.Task Send()
@@ -138,10 +159,16 @@ namespace Orleans.StorageProvider.RavenDB.TestInterfaces
                     case 938089621:  // IEmail
                         switch (methodId)
                         {
+                            case -646214881: 
+                                await ((IEmail)grain).SetPerson((IPerson)arguments[0]);
+                              return true;
+                            case 696601301: 
+                                return await ((IEmail)grain).Person;
                             case -470441258: 
                                 await ((IEmail)grain).Send();
                               return true;
-                            default: 
+                            case -606142484: return ((IEmail)grain).GetProperties();
+                                                        default: 
                                 throw new NotImplementedException("interfaceId="+interfaceId+",methodId="+methodId);
                         }
                     default:
@@ -158,7 +185,11 @@ namespace Orleans.StorageProvider.RavenDB.TestInterfaces
                 case 938089621:  // IEmail
                     switch (methodId)
                     {
-                        case -470441258:
+                        case -646214881:
+                            return "SetPerson";
+                    case 696601301:
+                            return "get_Person";
+                    case -470441258:
                             return "Send";
                     case -606142484:
                             return "GetProperties";
@@ -173,6 +204,20 @@ namespace Orleans.StorageProvider.RavenDB.TestInterfaces
         }
     }
     
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.814.60418")]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
+    [System.SerializableAttribute()]
+    public static class EmailExtensionMethods
+    {
+        
+static public System.Threading.Tasks.Task<EmailProperties> GetProperties(this IEmail interfaceData) 
+            { 
+                EmailFactory.EmailReference gref = interfaceData as EmailFactory.EmailReference;
+                 return gref.GetProperties();
+            }
+            
+    }
+    
     [Serializable()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Orleans-CodeGenerator", "1.0.814.60418")]
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute()]
@@ -180,9 +225,11 @@ namespace Orleans.StorageProvider.RavenDB.TestInterfaces
     {
         
 
+            public IPerson Person { get; set; }
             public Dictionary<string,object> AsDictionary()
             {  
                 var retValue = new Dictionary<string,object>();
+                retValue["Person"] = Person;
                 return retValue;
             }
     }

@@ -14,6 +14,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orleans.StorageProvider.Rav
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orleans.StorageProvider.RavenDB.TestGrains", "Orleans.StorageProvider.RavenDB.TestGrains\Orleans.StorageProvider.RavenDB.TestGrains.csproj", "{175FE268-122D-49E4-ADA8-3225DA386F48}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orleans.StorageProvider.RavenDB.Tests", "Orleans.StorageProvider.RavenDB.Tests\Orleans.StorageProvider.RavenDB.Tests.csproj", "{0B27AEAC-1722-440E-9E1C-107DA22DC493}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,6 +38,10 @@ Global
 		{175FE268-122D-49E4-ADA8-3225DA386F48}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{175FE268-122D-49E4-ADA8-3225DA386F48}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{175FE268-122D-49E4-ADA8-3225DA386F48}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0B27AEAC-1722-440E-9E1C-107DA22DC493}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B27AEAC-1722-440E-9E1C-107DA22DC493}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B27AEAC-1722-440E-9E1C-107DA22DC493}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B27AEAC-1722-440E-9E1C-107DA22DC493}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

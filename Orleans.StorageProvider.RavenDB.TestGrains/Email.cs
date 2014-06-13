@@ -17,6 +17,23 @@ namespace Orleans.StorageProvider.RavenDB.TestGrains
             return base.ActivateAsync();
         }
 
+        public Task<IPerson> Person
+        {
+            get { return Task.FromResult(State.Person); }
+        }
+
+
+        public Task SetPerson(IPerson person)
+        {
+            State.Person = person;
+            return State.WriteStateAsync();
+        }
+
+        public Task<DateTimeOffset?> SentAt
+        {
+            get { return Task.FromResult(State.SentAt); }
+        }
+
         public async Task Send()
         {
             if (this.State.SentAt.HasValue)

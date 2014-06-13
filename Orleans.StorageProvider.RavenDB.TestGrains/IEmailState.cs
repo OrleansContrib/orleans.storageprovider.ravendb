@@ -1,4 +1,5 @@
 ﻿using System;
+using Orleans.StorageProvider.RavenDB.TestInterfaces;
 
 namespace Orleans.StorageProvider.RavenDB.TestGrains
 {
@@ -6,5 +7,6 @@ namespace Orleans.StorageProvider.RavenDB.TestGrains
     {
         string Email { get; set; }
         DateTimeOffset? SentAt { get; set; }
+        IPerson Person { get; set; }
     }
 }
