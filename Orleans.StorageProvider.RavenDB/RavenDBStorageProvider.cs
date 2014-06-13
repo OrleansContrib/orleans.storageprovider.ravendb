@@ -52,6 +52,15 @@ namespace Orleans.StorageProvider.RavenDB
 
             var settings = ConfigurationManager.ConnectionStrings[connectionStringName];
 
+            if (settings == null)
+            {
+                string message = string.Format(
+                    "Unable to find connection string with Name={0}, consider adding " +
+                    @"<connectionStrings><add name=""{0}"" connectionString=""YOUR CONNECTION STRING HERE""/></connectionStrings> to your app.config",
+                    connectionStringName);
+                throw new ConfigurationErrorsException(message);
+            }
+
             var connectionStringBuilder = new DbConnectionStringBuilder
             {
                 ConnectionString = settings.ConnectionString
