@@ -1,23 +1,19 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Linq.Expressions;
-using System.Reflection;
-using Raven.Imports.Newtonsoft.Json.Utilities;
-
-namespace Orleans.StorageProvider.RavenDB
+﻿namespace Orleans.StorageProvider.RavenDB
 {
+    using System;
+    using System.Collections.Concurrent;
     using System.Configuration;
     using System.Data.Common;
     using System.Globalization;
-    using System.Linq;
+    using System.Reflection;
     using System.Threading.Tasks;
-    using Providers;
-    using Storage;
+    using Orleans.Providers;
+    using Orleans.Storage;
     using Raven.Abstractions.Commands;
     using Raven.Client;
     using Raven.Client.Document;
     using Raven.Client.Embedded;
-    using Raven.Database.Server;
+    using Raven.Imports.Newtonsoft.Json.Utilities;
 
     /// <summary>
     /// A RavenDB storage provider.
@@ -33,6 +29,7 @@ namespace Orleans.StorageProvider.RavenDB
     {
         private static ConcurrentDictionary<Type, MethodInfo> loadAsyncMethodInfoCache = new ConcurrentDictionary<Type, MethodInfo>(); 
         private DocumentStore documentStore;
+
         public string Name { get; private set; }
 
         public OrleansLogger Log { get; private set; }
@@ -171,7 +168,7 @@ namespace Orleans.StorageProvider.RavenDB
                 {
                     ConnectionStringName = connectionStringName,
                 };
-                this.documentStore.RegisterNecessaryListeners();
+                this.documentStore.RegisterDocumentStoreCustomizations();
                 this.documentStore.Initialize();
             });
         }
@@ -184,7 +181,7 @@ namespace Orleans.StorageProvider.RavenDB
                 {
                     RunInMemory = true
                 };
-                this.documentStore.RegisterNecessaryListeners();
+                this.documentStore.RegisterDocumentStoreCustomizations();
                 this.documentStore.Initialize();
             });
         }
@@ -196,11 +193,9 @@ namespace Orleans.StorageProvider.RavenDB
                 this.documentStore = new EmbeddableDocumentStore
                 {
                     ConnectionStringName = connectionStringName,
-                    UseEmbeddedHttpServer = true,
                 };
 
-                NonAdminHttp.EnsureCanListenToWhenInNonAdminContext(8080);
-                this.documentStore.RegisterNecessaryListeners();
+                this.documentStore.RegisterDocumentStoreCustomizations();
                 this.documentStore.Initialize();
             });
         }

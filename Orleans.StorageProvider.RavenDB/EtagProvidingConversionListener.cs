@@ -1,8 +1,8 @@
-﻿using Raven.Client.Listeners;
-using Raven.Json.Linq;
-
-namespace Orleans.StorageProvider.RavenDB
+﻿namespace Orleans.StorageProvider.RavenDB
 {
+    using Raven.Client.Listeners;
+    using Raven.Json.Linq;
+
     internal class EtagProvidingConversionListener : IDocumentConversionListener
     {
         public void EntityToDocument(string key, object entity, RavenJObject document, RavenJObject metadata)

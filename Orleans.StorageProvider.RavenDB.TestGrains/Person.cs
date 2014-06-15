@@ -7,21 +7,9 @@ using Orleans.StorageProvider.RavenDB.TestInterfaces;
 
 namespace Orleans.StorageProvider.RavenDB.TestGrains
 {
-    [StorageProvider(ProviderName = "RavenDBStorageProviderTestStore")]
-    //[StorageProvider(ProviderName = "RavenDBStorageProviderLocalTestStore")]
-    //[StorageProvider(ProviderName = "RavenDBStorageProviderInMemoryTestStore")]
+    [StorageProvider(ProviderName = "RavenDBStorageProviderTests")]
     public class Person : GrainBase<IPersonState>, IPerson
     {
-        Task IPerson.SetPersonalAttributes(PersonalAttributes props)
-        {
-            State.FirstName = props.FirstName;
-            State.LastName = props.LastName;
-            State.Gender = props.Gender;
-            State.Age = props.Age;
-
-            return State.WriteStateAsync();
-        }
-
         Task<string> IPerson.FirstName
         {
             get { return Task.FromResult(State.FirstName); }
@@ -40,6 +28,16 @@ namespace Orleans.StorageProvider.RavenDB.TestGrains
         Task<int> IPerson.Age
         {
             get { return Task.FromResult(State.Age); }
+        }
+
+        Task IPerson.SetPersonalAttributes(PersonalAttributes props)
+        {
+            State.FirstName = props.FirstName;
+            State.LastName = props.LastName;
+            State.Gender = props.Gender;
+            State.Age = props.Age;
+
+            return State.WriteStateAsync();
         }
     }
 }

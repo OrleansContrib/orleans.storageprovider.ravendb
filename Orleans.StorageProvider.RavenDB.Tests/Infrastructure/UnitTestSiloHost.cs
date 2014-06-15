@@ -484,7 +484,11 @@ namespace Orleans.Samples.Testing
 
         private Silo _LoadSiloInNewAppDomain(string siloName, Silo.SiloType type, OrleansConfiguration config, out AppDomain appDomain)
         {
-            var setup = new AppDomainSetup { ApplicationBase = Environment.CurrentDirectory };
+            var setup = new AppDomainSetup
+            {
+                ApplicationBase = Environment.CurrentDirectory,
+                ConfigurationFile = AppDomain.CurrentDomain.SetupInformation.ConfigurationFile
+            };
 
             appDomain = AppDomain.CreateDomain(siloName, null, setup);
 

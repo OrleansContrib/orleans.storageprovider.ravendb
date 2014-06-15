@@ -3,7 +3,7 @@
   <Globals>
     <StorageProviders>
       <!-- Embedded Mode!-->
-      <Provider Type="Orleans.StorageProvider.RavenDB.RavenDBStorageProvider" Name="RavenDBStorageProviderTestStore" ConnectionStringName=""/>
+      <Provider Type="Orleans.StorageProvider.RavenDB.RavenDBStorageProvider" Name="RavenDBStorageProviderTests" ConnectionStringName="RavenDB"/>
     </StorageProviders>
     <SeedNode Address="localhost" Port="11111" />
   </Globals>
