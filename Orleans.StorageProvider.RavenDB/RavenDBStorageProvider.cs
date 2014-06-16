@@ -86,18 +86,16 @@
 
         public async Task ReadStateAsync(string grainType, GrainReference grainReference, IGrainState grainState)
         {
-            var stateName = grainState.GetType().Name;
-            var key = grainReference.ToKeyString();
-            var id = string.Format(CultureInfo.InvariantCulture, "{0}/{1}", stateName, key);
+            var stateId = new GrainStateId(grainState, grainReference);
 
-            this.Log.Verbose3("Reading: GrainType={0} Pk={1} Grainid={2} from Document={3}", grainType, key, grainReference, id);
+            this.Log.Verbose3("Reading: GrainType={0} Pk={1} Grainid={2} from Document={3}", grainType, stateId.Key, grainReference, stateId);
 
             using (IAsyncDocumentSession session = this.documentStore.OpenAsyncSession())
             {
-                IGrainState state = await session.LoadAsync(grainState, id);
+                IGrainState state = await session.LoadAsync(grainState, stateId);
                 if (state != null)
                 {
-                    this.Log.Verbose3("Read: GrainType={0} Pk={1} Grainid={2} from Document={3}", grainType, key, grainReference, id);
+                    this.Log.Verbose3("Read: GrainType={0} Pk={1} Grainid={2} from Document={3}", grainType, stateId.Key, grainReference, state);
                     
                     grainState.SetAll(state.AsDictionary());
 
@@ -109,11 +107,9 @@
 
         public async Task WriteStateAsync(string grainType, GrainReference grainReference, IGrainState grainState)
         {
-            var stateName = grainState.GetType().Name;
-            var key = grainReference.ToKeyString();
-            var id = string.Format(CultureInfo.InvariantCulture, "{0}/{1}", stateName, key);
+            var stateId = new GrainStateId(grainState, grainReference);
 
-            this.Log.Verbose3("Writing: GrainType={0} Pk={1} Grainid={2} ETag={3} to Document={4}", grainType, key, grainReference, grainState.Etag, id);
+            this.Log.Verbose3("Writing: GrainType={0} Pk={1} Grainid={2} ETag={3} to Document={4}", grainType, stateId.Key, grainReference, grainState.Etag, stateId);
 
             using (IAsyncDocumentSession session = this.documentStore.OpenAsyncSession())
             {
@@ -122,36 +118,31 @@
                 // If we have an Etag we need to check against that Etag while storing
                 if (grainState.Etag != null)
                 {
-                    await session.StoreAsync(grainState, grainState.Etag, id);
+                    await session.StoreAsync(grainState, grainState.Etag, stateId);
                 }
                 else
                 {
-                    await session.StoreAsync(grainState, id);
+                    await session.StoreAsync(grainState, stateId);
                 }
 
                 await session.SaveChangesAsync();
 
-                this.Log.Verbose3("Written: GrainType={0} Pk={1} Grainid={2} ETag={3} to Document={4}", grainType, key, grainReference, grainState.Etag, id);
+                this.Log.Verbose3("Written: GrainType={0} Pk={1} Grainid={2} ETag={3} to Document={4}", grainType, stateId.Key, grainReference, grainState.Etag, stateId);
             }
         }
 
         public async Task ClearStateAsync(string grainType, GrainReference grainReference, GrainState grainState)
         {
-            var stateName = grainState.GetType().Name;
-            var key = grainReference.ToKeyString();
-            var id = string.Format(CultureInfo.InvariantCulture, "{0}/{1}", stateName, key);
+            var stateId = new GrainStateId(grainState, grainReference);
 
-            this.Log.Verbose3("Clearing: GrainType={0} Pk={1} Grainid={2} ETag={3} from Document={4}", grainType, key, grainReference, grainState.Etag, id);
+            this.Log.Verbose3("Clearing: GrainType={0} Pk={1} Grainid={2} ETag={3} from Document={4}", grainType, stateId.Key, grainReference, grainState.Etag, stateId);
 
             using (IAsyncDocumentSession session = this.documentStore.OpenAsyncSession())
             {
-                session.Advanced.Defer(new DeleteCommandData
-                {
-                    Key = id
-                });
+                session.Advanced.Defer(new DeleteCommandData { Key = stateId });
                 await session.SaveChangesAsync();
 
-                this.Log.Verbose3("Cleared: GrainType={0} Pk={1} Grainid={2} ETag={3} from Document={4}", grainType, key, grainReference, grainState.Etag, id);
+                this.Log.Verbose3("Cleared: GrainType={0} Pk={1} Grainid={2} ETag={3} from Document={4}", grainType, stateId.Key, grainReference, grainState.Etag, stateId);
             }
         }
 

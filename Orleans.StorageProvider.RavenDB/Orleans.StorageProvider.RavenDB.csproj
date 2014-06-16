@@ -90,6 +90,7 @@
     <Compile Include="EtagProvidingStoreListener.cs" />
     <Compile Include="GrainReferenceConverter.cs" />
     <Compile Include="GrainReferenceInfo.cs" />
+    <Compile Include="GrainStateId.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RavenDBStorageProvider.cs" />
   </ItemGroup>
