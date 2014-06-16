@@ -83,6 +83,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AsyncDocumentSessionExtensions.cs" />
     <Compile Include="GrainReferenceAwareContractResolver.cs" />
     <Compile Include="DocumentStoreExtensions.cs" />
     <Compile Include="EtagProvidingConversionListener.cs" />

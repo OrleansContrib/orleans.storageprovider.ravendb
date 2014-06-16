@@ -27,7 +27,6 @@
     /// </remarks>
     public class RavenDBStorageProvider : IStorageProvider
     {
-        private static ConcurrentDictionary<Type, MethodInfo> loadAsyncMethodInfoCache = new ConcurrentDictionary<Type, MethodInfo>(); 
         private DocumentStore documentStore;
 
         public string Name { get; private set; }
@@ -95,19 +94,15 @@
 
             using (IAsyncDocumentSession session = this.documentStore.OpenAsyncSession())
             {
-                var methodInfo = loadAsyncMethodInfoCache.GetOrAdd(
-                    grainState.GetType(), 
-                    t => session.GetType().GetGenericMethod("LoadAsync", typeof(string)).MakeGenericMethod(grainState.GetType()));
-                var state = await((dynamic)methodInfo.Invoke(session, new object[] { id }));
+                IGrainState state = await session.LoadAsync(grainState, id);
                 if (state != null)
                 {
                     this.Log.Verbose3("Read: GrainType={0} Pk={1} Grainid={2} from Document={3}", grainType, key, grainReference, id);
                     
-                    var storedGrainState = (IGrainState)state;
-                    grainState.SetAll(storedGrainState.AsDictionary());
+                    grainState.SetAll(state.AsDictionary());
 
                     // The deserialized grain state actually has the Etag but SetAll doesn't assign it automatically.
-                    grainState.Etag = storedGrainState.Etag;
+                    grainState.Etag = state.Etag;
                 }
             }
         }
