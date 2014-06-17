@@ -1,10 +1,10 @@
-﻿using Raven.Client.Document;
-
-namespace Orleans.StorageProvider.RavenDB
+﻿namespace Orleans.StorageProvider.RavenDB
 {
+    using Raven.Client;
+
     internal static class DocumentStoreExtensions
     {
-        public static void RegisterDocumentStoreCustomizations(this DocumentStore store)
+        public static void RegisterDocumentStoreCustomizations(this DocumentStoreBase store)
         {
             store.Conventions.JsonContractResolver = new GrainReferenceAwareContractResolver();
 
