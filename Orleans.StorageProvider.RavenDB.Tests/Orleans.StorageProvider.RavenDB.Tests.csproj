@@ -30,6 +30,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FluentAssertions">
+      <HintPath>..\packages\FluentAssertions.3.0.107\lib\net45\FluentAssertions.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentAssertions.Core">
+      <HintPath>..\packages\FluentAssertions.3.0.107\lib\net45\FluentAssertions.Core.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Data.Edm, Version=5.6.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.Data.Edm.5.6.1\lib\net40\Microsoft.Data.Edm.dll</HintPath>
@@ -94,9 +100,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GrainWithExtendedKey.cs" />
+    <Compile Include="GrainWithSimpleKey.cs" />
+    <Compile Include="Infrastructure\AllDocumentsById.cs" />
+    <Compile Include="Infrastructure\RavenSetup.cs" />
+    <Compile Include="Infrastructure\SiloSetup.cs" />
     <Compile Include="Infrastructure\UnitTestSiloHost.cs" />
     <Compile Include="Infrastructure\UnitTestSiloHostOptions.cs" />
-    <Compile Include="LoadsGrainWithStateReferencingOtherGrain.cs" />
+    <Compile Include="GrainWithStateReferencingOtherGrain.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

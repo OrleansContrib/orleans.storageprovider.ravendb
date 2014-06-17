@@ -25,6 +25,11 @@ namespace Orleans.StorageProvider.RavenDB
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
+            if (existingValue == null)
+            {
+                return null;
+            }
+
             var info = new GrainReferenceInfo();
             serializer.Populate(reader, info);
             return SerializationManager.Deserialize(objectType, new BinaryTokenStreamReader(info.Data));

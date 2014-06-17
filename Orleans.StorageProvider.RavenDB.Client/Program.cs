@@ -22,7 +22,7 @@ namespace Orleans.StorageProvider.RavenDB.Client
 
             Orleans.OrleansClient.Initialize("DevTestClientConfiguration.xml");
 
-            var email = EmailFactory.GetGrain(1, "asdf@gmail.bs#ç%&/()+¦");
+            var email = EmailFactory.GetGrain(1, "asdf@gmail.bs");
             email.Send().Wait();
 
             var grain = PersonFactory.GetGrain(1);
