@@ -41,10 +41,10 @@ namespace Orleans.StorageProvider.RavenDB.Tests
             var result = PersonFactory.GetGrain(1);
             var actual = new PersonalAttributes
             {
-                FirstName = await result.FirstName,
-                LastName = await result.LastName,
-                Age = await result.Age,
-                Gender = await result.Gender
+                FirstName = await result.GetFirstName(),
+                LastName = await result.GetLastName(),
+                Age = await result.GetAge(),
+                Gender = await result.GetGender()
             };
 
             IAsyncDocumentSession session = this.ravenSetup.NewAsyncSession();

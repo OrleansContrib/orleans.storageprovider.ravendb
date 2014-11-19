@@ -36,7 +36,7 @@
             await email.Send();
 
             var emailAgain = EmailFactory.GetGrain(2, "asdf@gmail.bs");
-            var expectedPerson = await emailAgain.Person;
+            var expectedPerson = await emailAgain.GetPerson();
 
             expectedPerson.Should().NotBeNull();
         }

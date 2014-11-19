@@ -1,10 +1,9 @@
-﻿using System;
-using System.Net;
-
-using Orleans.Host.SiloHost;
-
-namespace Orleans.StorageProvider.RavenDB.Client
+﻿namespace Orleans.StorageProvider.RavenDB.Client
 {
+    using System;
+    using System.Net;
+    using Orleans.Host;
+
     internal class OrleansHostWrapper : IDisposable
     {
         public bool Debug

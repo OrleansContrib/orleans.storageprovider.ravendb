@@ -1,33 +1,30 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Text;
-using Orleans;
-using Orleans.StorageProvider.RavenDB.TestInterfaces;
-
-namespace Orleans.StorageProvider.RavenDB.TestGrains
+﻿namespace Orleans.StorageProvider.RavenDB.TestGrains
 {
+    using System.Threading.Tasks;
+    using Orleans.Providers;
+    using Orleans.StorageProvider.RavenDB.TestInterfaces;
+
     [StorageProvider(ProviderName = "RavenDBStorageProviderTests")]
-    public class Person : GrainBase<IPersonState>, IPerson
+    public class Person : Grain<IPersonState>, IPerson
     {
-        Task<string> IPerson.FirstName
+        Task<string> IPerson.GetFirstName()
         {
-            get { return Task.FromResult(State.FirstName); }
+            return Task.FromResult(State.FirstName);
         }
 
-        Task<string> IPerson.LastName
+        Task<string> IPerson.GetLastName()
         {
-            get { return Task.FromResult(State.LastName); }
+            return Task.FromResult(State.LastName);
         }
 
-        Task<GenderType> IPerson.Gender
+        Task<GenderType> IPerson.GetGender()
         {
-            get { return Task.FromResult(State.Gender); }
+             return Task.FromResult(State.Gender);
         }
 
-        Task<int> IPerson.Age
+        Task<int> IPerson.GetAge()
         {
-            get { return Task.FromResult(State.Age); }
+            return Task.FromResult(State.Age);
         }
 
         Task IPerson.SetPersonalAttributes(PersonalAttributes props)

@@ -1,13 +1,12 @@
-﻿using System;
-using System.Threading.Tasks;
-
-namespace Orleans.StorageProvider.RavenDB.TestInterfaces
+﻿namespace Orleans.StorageProvider.RavenDB.TestInterfaces
 {
+    using System.Threading.Tasks;
+
     [ExtendedPrimaryKey]
     public interface IEmail : IGrain
     {
         Task SetPerson(IPerson person);
-        Task<IPerson> Person { get; }
+        Task<IPerson> GetPerson();
         Task Send();
     }
 }

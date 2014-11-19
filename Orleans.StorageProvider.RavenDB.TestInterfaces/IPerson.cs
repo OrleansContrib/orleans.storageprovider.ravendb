@@ -9,9 +9,9 @@ namespace Orleans.StorageProvider.RavenDB.TestInterfaces
     {
         Task SetPersonalAttributes(PersonalAttributes person);
 
-        Task<string> FirstName { get; }
-        Task<string> LastName { get; }
-        Task<int> Age { get; }
-        Task<GenderType> Gender { get; }
+        Task<string> GetFirstName();
+        Task<string> GetLastName();
+        Task<int> GetAge();
+        Task<GenderType> GetGender();
     }
 }

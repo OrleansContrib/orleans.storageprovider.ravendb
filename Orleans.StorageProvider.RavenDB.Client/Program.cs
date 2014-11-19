@@ -29,19 +29,19 @@ namespace Orleans.StorageProvider.RavenDB.Client
             var grain2 = PersonFactory.GetGrain(2);
             
             // If the name is set, we've run this code before.
-            var name = grain.FirstName.Result;
+            var name = grain.GetFirstName().Result;
 
             // We always override person 2
-            var name2 = grain2.FirstName.Result;
+            var name2 = grain2.GetFirstName().Result;
             grain2.SetPersonalAttributes(new PersonalAttributes { FirstName = "John Copy", LastName = "Doe Copy", Age = 24, Gender = GenderType.Male }).Wait();
 
             if (name != null)
             {
                 Console.WriteLine("\n\nThis was found in the persistent store: {0}, {1}, {2}, {3}\n\n",
                     name,
-                    grain.LastName.Result,
-                    grain.Gender.Result,
-                    grain.Age.Result);
+                    grain.GetLastName().Result,
+                    grain.GetGender().Result,
+                    grain.GetAge().Result);
             }
             else
             {

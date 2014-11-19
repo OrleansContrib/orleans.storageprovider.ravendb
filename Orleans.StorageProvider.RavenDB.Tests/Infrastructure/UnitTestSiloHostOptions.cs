@@ -7,6 +7,8 @@ using Orleans.Runtime;
 
 namespace Orleans.Samples.Testing
 {
+    using Orleans.Runtime.Configuration;
+
     /*
      * This code is borrowed from the orleans sample repository because there is currently no binary distribution
      */

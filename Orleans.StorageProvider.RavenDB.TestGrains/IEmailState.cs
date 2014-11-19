@@ -1,8 +1,8 @@
-﻿using System;
-using Orleans.StorageProvider.RavenDB.TestInterfaces;
-
-namespace Orleans.StorageProvider.RavenDB.TestGrains
+﻿namespace Orleans.StorageProvider.RavenDB.TestGrains
 {
+    using System;
+    using Orleans.StorageProvider.RavenDB.TestInterfaces;
+
     public interface IEmailState : IGrainState
     {
         string Email { get; set; }

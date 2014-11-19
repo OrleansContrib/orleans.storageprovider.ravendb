@@ -1,23 +1,24 @@
-﻿using System;
-using System.Threading.Tasks;
-using Orleans.StorageProvider.RavenDB.TestInterfaces;
-
-namespace Orleans.StorageProvider.RavenDB.TestGrains
+﻿namespace Orleans.StorageProvider.RavenDB.TestGrains
 {
+    using System;
+    using System.Threading.Tasks;
+    using Orleans.Providers;
+    using Orleans.StorageProvider.RavenDB.TestInterfaces;
+
     [StorageProvider(ProviderName = "RavenDBStorageProviderTests")]
-    public class Email : GrainBase<IEmailState>, IEmail
+    public class Email : Grain<IEmailState>, IEmail
     {
         private string email;
 
-        public Task<IPerson> Person
+        public Task<IPerson> GetPerson()
         {
-            get { return Task.FromResult(State.Person); }
+             return Task.FromResult(State.Person);
         }
 
 
-        public Task<DateTimeOffset?> SentAt
+        public Task<DateTimeOffset?> GetSentAt()
         {
-            get { return Task.FromResult(State.SentAt); }
+             return Task.FromResult(State.SentAt);
         }
 
         public async Task Send()

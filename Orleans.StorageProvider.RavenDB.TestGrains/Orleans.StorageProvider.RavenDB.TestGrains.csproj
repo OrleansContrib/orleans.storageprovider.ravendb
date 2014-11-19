@@ -51,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Email.cs" />
+    <Compile Include="Properties\orleans.codegen.cs" />
     <Compile Include="Person.cs" />
     <Compile Include="IEmailState.cs" />
     <Compile Include="IPersonState.cs" />
