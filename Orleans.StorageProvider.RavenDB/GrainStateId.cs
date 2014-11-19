@@ -1,6 +1,7 @@
 ﻿namespace Orleans.StorageProvider.RavenDB
 {
     using System.Globalization;
+    using Orleans.Runtime;
 
     internal class GrainStateId
     {

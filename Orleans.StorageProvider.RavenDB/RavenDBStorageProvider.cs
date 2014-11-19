@@ -8,6 +8,7 @@
     using System.Reflection;
     using System.Threading.Tasks;
     using Orleans.Providers;
+    using Orleans.Runtime;
     using Orleans.Storage;
     using Raven.Abstractions.Commands;
     using Raven.Client;
@@ -131,7 +132,7 @@
             }
         }
 
-        public async Task ClearStateAsync(string grainType, GrainReference grainReference, GrainState grainState)
+        public async Task ClearStateAsync(string grainType, GrainReference grainReference, IGrainState grainState)
         {
             var stateId = new GrainStateId(grainState, grainReference);
 
